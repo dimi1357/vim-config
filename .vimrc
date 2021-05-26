@@ -23,7 +23,6 @@ Plug 'lepture/vim-jinja'
 Plug 'pangloss/vim-javascript'
 Plug 'alvan/vim-closetag'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'davidhalter/jedi-vim'
 call plug#end()
 
 filetype plugin indent on
@@ -209,4 +208,3 @@ highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
 nmap ) <Plug>(GitGutterNextHunk)
 nmap ( <Plug>(GitGutterPrevHunk)
 
-let g:jedi#usages_command = "<leader>?"
