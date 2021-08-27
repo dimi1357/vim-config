@@ -207,4 +207,5 @@ highlight GitGutterChange guifg=#bbbb00 ctermfg=Yellow
 highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
 nmap ) <Plug>(GitGutterNextHunk)
 nmap ( <Plug>(GitGutterPrevHunk)
+inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
 
