@@ -11,7 +11,6 @@ Plug 'tpope/vim-sensible'
 Plug 'itchyny/lightline.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'ap/vim-buftabline'
-Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -23,6 +22,17 @@ Plug 'lepture/vim-jinja'
 Plug 'pangloss/vim-javascript'
 Plug 'alvan/vim-closetag'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'wincent/command-t'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'puremourning/vimspector'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-syntastic/syntastic'
 call plug#end()
 
 filetype plugin indent on
@@ -42,10 +52,10 @@ set laststatus=2
 set t_Co=256
 set t_ut=
 
-" turn on line numbering
-set number
+" turn hybrid line numbers on
+set number relativenumber
+set nu rnu
 
-" sane text files
 set fileformat=unix
 set encoding=utf-8
 set fileencoding=utf-8
@@ -209,3 +219,39 @@ nmap ) <Plug>(GitGutterNextHunk)
 nmap ( <Plug>(GitGutterPrevHunk)
 inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
 
+set splitright
+map <leader>= :CommandT<CR>
+
+" key mappings example
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" there's way more, see `:help coc-key-mappings@en'
+
+let gitBranch=system("git rev-parse --abbrev-ref HEAD")
+set laststatus=2
+set statusline=%F%m%r%h%w\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]
+execute "set statusline +=" . gitBranch
+
+nmap <leader>f :Files<CR>
+set termwinsize=15x200
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
+map <leader>g :Ag<CR>
+
+" Tab completion
+inoremap <expr> <Tab> getline('.')[col('.')-2] !~ '^\s\?$' \|\| pumvisible()
+      \ ? '<C-N>' : '<Tab>'
+inoremap <expr> <S-Tab> pumvisible() \|\| getline('.')[col('.')-2] !~ '^\s\?$'
+      \ ? '<C-P>' : '<Tab>'
+autocmd CmdwinEnter * inoremap <expr> <buffer> <Tab>
+      \ getline('.')[col('.')-2] !~ '^\s\?$' \|\| pumvisible()
+      \ ? '<C-X><C-V>' : '<Tab>'
+
+map <leader>r :NERDTreeFind<CR>
