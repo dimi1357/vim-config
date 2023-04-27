@@ -227,6 +227,11 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 " there's way more, see `:help coc-key-mappings@en'
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 let gitBranch=system("git rev-parse --abbrev-ref HEAD")
 set laststatus=2
@@ -255,3 +260,5 @@ autocmd CmdwinEnter * inoremap <expr> <buffer> <Tab>
       \ ? '<C-X><C-V>' : '<Tab>'
 
 map <leader>r :NERDTreeFind<CR>
+let NERDTreeShowHidden=1
+map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
